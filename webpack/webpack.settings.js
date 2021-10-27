@@ -21,7 +21,8 @@ const config = {
       base : './../dist',
       clean: ['**/*']
     },
-    templates: './../views'
+    templates: './../views',
+    public: './../public/'
   },
 
   stats: {

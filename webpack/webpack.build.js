@@ -15,7 +15,7 @@ const zopfli               = require('@gfx/zopfli');
 
 const configureCompression = () => {
   return {
-    filename            : '[path].gz[query]',
+    filename            : 'static/gz/[path][base].gz',
     test                : /\.(js|css|html|svg)$/,
     threshold           : 10240,
     minRatio            : 0.8,
@@ -29,9 +29,23 @@ const configureCompression = () => {
   };
 };
 
+const configureFontLoader = () => {
+  return {
+    test: /\.(svg|eot|woff|woff2|ttf)$/,
+    type: 'asset/resource',
+    generator: {
+      filename: 'fonts/[hash][ext][query]'
+    }
+  };
+};
+
 const configureImageLoader = () => {
   return {
     test: /\.(png|jpe?g|gif|svg|webp)$/i,
+    type: 'asset/resource',
+    generator: {
+      filename: 'static/[hash][ext][query]'
+    },
     use: [
       {
         loader: 'file-loader',
@@ -140,6 +154,7 @@ module.exports = merge(
       rules: [
         common.configureBabelLoader(),
         common.configureHTMLLoader(),
+        configureFontLoader(),
         configureSCSSLoader(),
         configureImageLoader()
       ]

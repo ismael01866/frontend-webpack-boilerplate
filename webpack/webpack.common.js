@@ -98,6 +98,7 @@ const config = {
 
     new HtmlWebpackPlugin({
       filename: 'index.html',
+      favicon : path.resolve(__dirname, settings.paths.public, 'favicon.ico'),
       template: path.resolve(__dirname, settings.paths.templates, 'index.html')
     })
   ]
