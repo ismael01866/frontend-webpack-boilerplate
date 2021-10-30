@@ -3,11 +3,8 @@
 ## Table of Contents
 
 1. [Requirements](#1-requirements)
-1. [Quick Start](#2-quick-start)
-1. [Environment Configuration](#3-environment-configuration)
-1. [Adding Google Fonts](#4-adding-google-fonts)
-1. [Adding Responsive Images](#5-adding-responsive-images)
-1. [Image Credits](#6-image-credits)
+2. [Quick Start](#2-quick-start)
+3. [Environment Configuration](#3-environment-configuration)
 
 ## 1. Requirements
 
