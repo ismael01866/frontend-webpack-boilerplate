@@ -10,6 +10,7 @@ const TerserPlugin         = require('terser-webpack-plugin');
 const PurgecssPlugin       = require('purgecss-webpack-plugin');
 const CompressionPlugin    = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 
 const zopfli               = require('@gfx/zopfli');
 
@@ -29,47 +30,27 @@ const configureCompression = () => {
   };
 };
 
-const configureFontLoader = () => {
+const configureImageMinimizer = () => {
   return {
-    test: /\.(svg|eot|woff|woff2|ttf)$/,
-    type: 'asset/resource',
-    generator: {
-      filename: 'fonts/[hash][ext][query]'
-    }
-  };
-};
+    minimizerOptions: {
+      plugins: [
+        ['gifsicle', {
+          interlaced: true
+        }],
 
-const configureImageLoader = () => {
-  return {
-    test: /\.(png|jpe?g|gif|svg|webp)$/i,
-    type: 'asset/resource',
-    generator: {
-      filename: 'static/[hash][ext][query]'
-    },
-    use: [
-      {
-        loader: 'file-loader',
-        options: {
-          plugins: [
-            require('imagemin-gifsicle')({
-              interlaced: true
-            }),
-            require('imagemin-mozjpeg')({
-              progressive: true,
-              arithmetic: false
-            }),
-            require('imagemin-optipng')({
-              optimizationLevel: 5
-            }),
-            require('imagemin-svgo')({
-              plugins: [
-                { convertPathData: false }
-              ]
-            })
-          ]
-        }
-      }
-    ]
+        ['jpegtran', {
+          progressive: true
+        }],
+
+        ['optipng', {
+          optimizationLevel: 5
+        }],
+
+        ['svgo', {
+          plugins: ['preset-default']
+        }]
+      ]
+    }
   };
 };
 
@@ -83,7 +64,6 @@ const configureSCSSLoader = () => {
       {
         loader: 'css-loader',
         options: {
-          importLoaders: 2,
           sourceMap: false
         }
       },
@@ -153,10 +133,10 @@ module.exports = merge(
     module: {
       rules: [
         common.configureBabelLoader(),
+        common.configureFontLoader(),
+        common.configureImageLoader(),
         common.configureHTMLLoader(),
-        configureFontLoader(),
-        configureSCSSLoader(),
-        configureImageLoader()
+        configureSCSSLoader()
       ]
     },
     plugins: [
@@ -165,6 +145,9 @@ module.exports = merge(
       ),
       new PurgecssPlugin(
         configurePurgeCss()
+      ),
+      new ImageMinimizerPlugin(
+        configureImageMinimizer()
       ),
       new CompressionPlugin(
         configureCompression()

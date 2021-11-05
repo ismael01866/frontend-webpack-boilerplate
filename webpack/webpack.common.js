@@ -3,6 +3,7 @@ const settings               = require('./webpack.settings.js');
 
 const DotenvWebpack          = require('dotenv-webpack');
 const HtmlWebpackPlugin      = require('html-webpack-plugin');
+const CopyWebpackPlugin      = require('copy-webpack-plugin');
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -26,6 +27,26 @@ const configureBabelLoader = () => {
   };
 };
 
+const configureFontLoader = () => {
+  return {
+    test: /\.(svg|eot|woff|woff2|ttf)$/,
+    type: 'asset/resource',
+    generator: {
+      filename: 'fonts/[hash][ext][query]'
+    }
+  };
+};
+
+const configureImageLoader = () => {
+  return {
+    test: /\.(png|jpe?g|gif|svg|webp)$/i,
+    type: 'asset',
+    generator: {
+      filename: 'assets/[hash][ext][query]'
+    }
+  };
+};
+
 const configureHTMLLoader = () => {
   return {
     test  : /\.html$/,
@@ -43,8 +64,7 @@ const configureSCSSLoader = () => {
       {
         loader: 'css-loader',
         options: {
-          importLoaders: 2,
-          sourceMap    : true
+          sourceMap: true
         }
       },
       {
@@ -101,7 +121,20 @@ const config = {
       favicon : path.resolve(__dirname, settings.paths.public, 'favicon.ico'),
       template: path.resolve(__dirname, settings.paths.templates, 'index.html')
     })
+
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     { from: '', to: '' }
+    //   ]
+    // })
   ]
 };
 
-module.exports = { config, configureHTMLLoader, configureBabelLoader, configureSCSSLoader };
+module.exports = {
+  config,
+  configureFontLoader,
+  configureImageLoader,
+  configureBabelLoader,
+  configureHTMLLoader,
+  configureSCSSLoader
+};

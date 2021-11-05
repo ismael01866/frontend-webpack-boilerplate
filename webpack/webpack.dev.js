@@ -23,20 +23,6 @@ const configureDevServer = () => {
   };
 };
 
-const configureImageLoader = () => {
-  return {
-    test: /\.(png|jpe?g|gif|svg|webp)$/i,
-    use: [
-      {
-        loader: 'file-loader',
-        options: {
-          name: 'img/[name].[hash].[ext]'
-        }
-      }
-    ]
-  };
-};
-
 module.exports = merge(
   common.config, {
     mode     : 'development',
@@ -45,9 +31,10 @@ module.exports = merge(
     module: {
       rules: [
         common.configureBabelLoader(),
+        common.configureFontLoader(),
+        common.configureImageLoader(),
         common.configureHTMLLoader(),
-        common.configureSCSSLoader(),
-        configureImageLoader()
+        common.configureSCSSLoader()
       ]
     },
     plugins: [

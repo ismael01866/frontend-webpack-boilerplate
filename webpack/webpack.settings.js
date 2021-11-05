@@ -22,7 +22,7 @@ const config = {
       clean: ['**/*']
     },
     templates: './../views',
-    public: './../public/'
+    public: './..'
   },
 
   stats: {
@@ -35,7 +35,7 @@ const config = {
   },
 
   purgeCssConfig: {
-    paths: ['./../src/**/*.js', './../views/**/*.html'],
+    paths: ['./../src/**/*.js', './../views/**/*.html', './../views/**/*.ejs'],
     whitelistPatterns: configureWhitelistPatterns()
   }
 
