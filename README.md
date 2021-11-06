@@ -1,4 +1,4 @@
-# HTML + WebPack 5 = Boilerplate
+# FrontEnd + WebPack 5 = Boilerplate
 
 ## Table of Contents
 
